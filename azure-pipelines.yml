@@ -12,10 +12,11 @@ pool:
 steps:
 
 - task: DeleteFiles@1
-  displayName: 'Remove unneeded files'
   inputs:
+    SourceDirectory: ' ../../../Repo_Internal/Apps/'
     contents: |
-      ../../../Repo_Internal/Apps/**/*
+      **/*
+  displayName: 'Remove unneeded files'
 
 - task: CopyFiles@2
   inputs:
@@ -24,12 +25,12 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '../../../Repo/Apps'
+    sourceFolder: '../../../Repo/Apps/**/*'
     contents: |
       **/*
       !.git/**/*
       !node_modules/**/*
-    targetFolder: '../../../Repo_Internal/Apps'
+    targetFolder: '../../../Repo_Internal/Apps/**/*'
   displayName: 'Copy Apps'  
 - task: NodeTool@0
   inputs:
@@ -38,7 +39,7 @@ steps:
 
 - script: |
     npm install
-  workingDirectory: '../../../Repo_Internal/Apps'
+  workingDirectory: '../../../Repo_Internal/Apps/**/*'
   displayName: 'npm install'
 
 - script: |
