@@ -10,36 +10,36 @@ pool:
   name: 'LocalBuilds'
 
 steps:
-- task: CopyFiles@2
-  inputs:
-    Contents: 'build/**' # Pull the build directory (React)
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    CleanTargetFolder: true
 
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '../../../Repo/Apps/'
-    contents: |
-      **
-      !.git/**
-      !node_modules/**
-    targetFolder: '../../../Repo_Internal/Apps/'
-    CleanTargetFolder: true
-  displayName: 'Copy Apps Repo'  
+## install node.js and targeting 14.x
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
   displayName: 'Install Node.js'
 
+## we copy from the C:\Repo into the C:\Repo_Internal
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '../../../Repo/Apps'
+    contents: |
+      **/*
+      !.git/**/*
+      !node_modules/**/*
+    targetFolder: 
+      '../../../Repo_Internal/Apps'
+  displayName: 
+    'Copy Apps'  
+
+## run install and build
 - script: |
     npm install
-  workingDirectory: '../../../Repo_Internal/Apps/'
+  workingDirectory: '../../../Repo_Internal/Apps'
   displayName: 'npm install'
 
-##- script: |
-##    npm run build
-##  workingDirectory: '../../../Repo_Internal/Apps/'
-##  displayName: 'npm build'
+- script: |
+    npm run build
+  workingDirectory: '../../../Repo_Internal/Apps'
+  displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
   inputs: 
@@ -51,7 +51,11 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-      **
-      !.git/**
-      !node_modules/**
+      **/*
+      !.git/**/*
+      !node_modules/**/*
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: CopyFiles@2
+  inputs:
+    Contents: 'build/**' # Pull the build directory (React)
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
