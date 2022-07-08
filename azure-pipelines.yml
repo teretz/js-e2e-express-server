@@ -36,10 +36,10 @@ steps:
   workingDirectory: '../../../Repo_Internal/Apps/'
   displayName: 'npm install'
 
-- script: |
-    npm run build
-  workingDirectory: '../../../Repo_Internal/Apps/'
-  displayName: 'npm build'
+##- script: |
+##    npm run build
+##  workingDirectory: '../../../Repo_Internal/Apps/'
+##  displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
   inputs: 
