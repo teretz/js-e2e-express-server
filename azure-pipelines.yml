@@ -10,27 +10,21 @@ pool:
   name: 'LocalBuilds'
 
 steps:
-
-- task: DeleteFiles@1
-  inputs:
-    SourceDirectory: ' ../../../Repo_Internal/Apps/'
-    contents: |
-      **/*
-  displayName: 'Remove unneeded files'
-
 - task: CopyFiles@2
   inputs:
     Contents: 'build/**' # Pull the build directory (React)
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    CleanTargetFolder: true
 
 - task: CopyFiles@2
   inputs:
     sourceFolder: '../../../Repo/Apps/'
     contents: |
-      **/*
-      !.git/**/*
-      !node_modules/**/*
+      **
+      !.git/**
+      !node_modules/**
     targetFolder: '../../../Repo_Internal/Apps/'
+    CleanTargetFolder: true
   displayName: 'Copy Apps Repo'  
 - task: NodeTool@0
   inputs:
@@ -57,7 +51,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-      **/*
-      !.git/**/*
-      !node_modules/**/*
+      **
+      !.git/**
+      !node_modules/**
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
