@@ -30,11 +30,11 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: 'C:\Repo\Apps'
+    sourceFolder: '../../../Repo\Apps'
     contents: |
       **/*
       !.git/**/*
-    targetFolder: 'C:\Repo_Internal\Apps'
+    targetFolder: '../../../Repo_Internal\Apps'
   displayName: 'Copy Apps'  
 
 - task: PublishBuildArtifacts@1
