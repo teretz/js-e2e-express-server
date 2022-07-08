@@ -20,7 +20,7 @@ steps:
 ## we copy from the .\Repo into the .\Dev first which results in no merge conflicts as long as we copy into Dev after this step
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '$(REACT_APP_REPO_RECEIVING_UPDATE)'
+    sourceFolder: $(REACT_APP_REPO_RECEIVING_UPDATE)
     CleanTargetFolder: true
     contents: |
       **
@@ -37,7 +37,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Adding local development from $(REACT_APP_MIXIN_DIR) with the clean build of repo'
   inputs:
-    SourceFolder:  '$(REACT_APP_MIXIN_DIR)'
+    SourceFolder:  $(REACT_APP_MIXIN_DIR)
     Contents: |
       **
       !.git/**
@@ -63,4 +63,4 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: 'build/**' # Pull the build directory (React)
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    TargetFolder: $(Build.ArtifactStagingDirectory)
