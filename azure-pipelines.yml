@@ -9,8 +9,19 @@ trigger:
 pool:
   name: 'LocalBuilds'
 
-steps:
+variables:
+  ## this is what will be updated during release
+- name: SRC_REPO
+  value: ../../../Repo/Apps
+  ## this is what we are updating with
+- name: DEV_MIXIN
+  value: ../../../Repo_Internal/Apps 
+  ## this is wher the two get built together
+- name: RES_ENV
+  value: ../../../Dev/Apps 
 
+
+steps:
 ## install node.js and targeting 14.x
 - task: NodeTool@0
   inputs:
@@ -20,14 +31,14 @@ steps:
 ## we copy from the .\Repo into the .\Dev first which results in no merge conflicts as long as we copy into Dev after this step
 - task: CopyFiles@2
   inputs:
-    sourceFolder: $(REACT_APP_REPO_RECEIVING_UPDATE)
+    sourceFolder: $(SRC_REPO)
     CleanTargetFolder: true
     contents: |
       **
       !.git/**
       !node_modules/**
     targetFolder: 
-      $(REACT_APP_TARGET_DIR)
+      $(RES_ENV)
   displayName: 
     'Copy Apps'  
 
@@ -35,24 +46,24 @@ steps:
 ## as it deviates from the constant. this step may not be need repeated. 
 ## this is strictly to sanitize, test, and evaluate my releases.
 - task: CopyFiles@2
-  displayName: 'Adding local development from $(REACT_APP_MIXIN_DIR) with the clean build of repo'
+  displayName: 'Adding local development from $(DEV_MIXIN) with the clean build of repo'
   inputs:
-    SourceFolder:  $(REACT_APP_MIXIN_DIR)
+    SourceFolder:  $(DEV_MIXIN)
     Contents: |
       **
       !.git/**
       !node_modules/**
-    TargetFolder:  $(REACT_APP_TARGET_DIR)
+    TargetFolder:  $(RES_ENV)
 
 ## run install and build
 - script: |
     npm install
-  workingDirectory: $(REACT_APP_TARGET_DIR)
+  workingDirectory: $(RES_ENV)
   displayName: 'npm install'
 
 - script: |
     'npm run build'
-  workingDirectory: $(REACT_APP_TARGET_DIR)
+  workingDirectory: $(RES_ENV)
   displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
