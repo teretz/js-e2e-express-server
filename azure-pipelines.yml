@@ -34,6 +34,7 @@ steps:
     contents: |
       **/*
       !.git/**/*
+      !node_modules/**/*
     targetFolder: '../../../Repo_Internal\Apps'
   displayName: 'Copy Apps'  
 
@@ -48,5 +49,5 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
       **/*
-      !.git/**/*
+      !node_modules/**/*
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
