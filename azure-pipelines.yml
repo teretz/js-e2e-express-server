@@ -39,12 +39,12 @@ steps:
 
 - script: |
     npm install
-  workingDirectory: '../../../Repo_Internal/Apps/**/*'
+  workingDirectory: '../../../Repo_Internal/Apps/'
   displayName: 'npm install'
 
 - script: |
     npm run build
-  workingDirectory: '../../../Repo_Internal/Apps'
+  workingDirectory: '../../../Repo_Internal/Apps/'
   displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
