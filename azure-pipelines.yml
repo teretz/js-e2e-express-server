@@ -17,28 +17,42 @@ steps:
     versionSpec: '14.x'
   displayName: 'Install Node.js'
 
-## we copy from the C:\Repo into the C:\Repo_Internal
+## we copy from the .\Repo into the .\Dev first which results in no merge conflicts as long as we copy into Dev after this step
 - task: CopyFiles@2
   inputs:
     sourceFolder: '../../../Repo/Apps'
+    CleanTargetFolder: true
     contents: |
-      **/*
-      !.git/**/*
-      !node_modules/**/*
+      **
+      !.git/**
+      !node_modules/**
     targetFolder: 
-      '../../../Repo_Internal/Apps'
+      '../../../Dev/Apps'
   displayName: 
     'Copy Apps'  
+
+## this step is to add in the next change being introduced hence the Internal 
+## as it deviates from the constant. this step may not be need repeated. 
+## this is strictly to sanitize, test, and evaluate my releases.
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder:  '../../../Repo_Internal/Apps'
+    Contents: |
+      **
+      !.git/**
+      !node_modules/**
+    TargetFolder:  '../../../Dev/Apps'
 
 ## run install and build
 - script: |
     npm install
-  workingDirectory: '../../../Repo_Internal/Apps'
+  workingDirectory: '../../../Dev/Apps'
   displayName: 'npm install'
 
 - script: |
     npm run build
-  workingDirectory: '../../../Repo_Internal/Apps'
+  workingDirectory: '../../../Dev/Apps'
   displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
@@ -46,15 +60,6 @@ steps:
     PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
     ArtifactName: 'www' # output artifact named www
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
-      **/*
-      !.git/**/*
-      !node_modules/**/*
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: CopyFiles@2
   inputs:
     Contents: 'build/**' # Pull the build directory (React)
