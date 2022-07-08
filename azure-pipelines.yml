@@ -24,12 +24,12 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    sourceFolder: '../../../Repo\Apps'
+    sourceFolder: '../../../Repo/Apps'
     contents: |
       **/*
       !.git/**/*
       !node_modules/**/*
-    targetFolder: '../../../Repo_Internal\Apps'
+    targetFolder: '../../../Repo_Internal/Apps'
   displayName: 'Copy Apps'  
 - task: NodeTool@0
   inputs:
@@ -38,12 +38,12 @@ steps:
 
 - script: |
     npm install
-  workingDirectory: $(Agent.BuildDirectory)
+  workingDirectory: '../../../Repo_Internal/Apps'
   displayName: 'npm install'
 
 - script: |
     npm run build
-  workingDirectory: $(Agent.BuildDirectory)
+  workingDirectory: '../../../Repo_Internal/Apps'
   displayName: 'npm build'
 
 - task: PublishBuildArtifacts@1
