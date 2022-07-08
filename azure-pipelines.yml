@@ -23,6 +23,12 @@ steps:
     npm run build
   displayName: 'npm build'
 
+- task: DeleteFiles@1
+  displayName: 'Remove unneeded files'
+  inputs:
+    contents: |
+      ../../../Repo_Internal/Apps/**/*
+
 - task: CopyFiles@2
   inputs:
     Contents: 'build/**' # Pull the build directory (React)
