@@ -62,7 +62,7 @@ steps:
   displayName: 'npm install'
 
 - script: |
-    'npm run build'
+    npm run build
   workingDirectory: $(RES_ENV)
   displayName: 'npm build'
 
