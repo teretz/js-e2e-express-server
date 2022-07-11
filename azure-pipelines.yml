@@ -20,7 +20,6 @@ variables:
 - name: RES_ENV
   value: ../../../Dev/Apps 
 
-
 steps:
 ## install node.js and targeting 14.x
 - task: NodeTool@0
