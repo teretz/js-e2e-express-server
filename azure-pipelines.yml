@@ -49,6 +49,7 @@ steps:
   displayName: 'Adding local development from $(DEV_MIXIN) with the clean build of repo'
   inputs:
     SourceFolder:  $(DEV_MIXIN)
+    OverWrite: true
     Contents: |
       **
       !.git/**
@@ -65,13 +66,3 @@ steps:
     npm run build
   workingDirectory: $(RES_ENV)
   displayName: 'npm build'
-
-- task: PublishBuildArtifacts@1
-  inputs: 
-    PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-    ArtifactName: 'www' # output artifact named www
-
-- task: CopyFiles@2
-  inputs:
-    Contents: 'build/**' # Pull the build directory (React)
-    TargetFolder: $(Build.ArtifactStagingDirectory)
